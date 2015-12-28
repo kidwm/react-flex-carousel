@@ -1,0 +1,33 @@
+{
+  "name": "react-flex-carousel",
+  "version": "0.1.0",
+  "description": "A simple responsive Carousel powered by React and CSS Flexbox",
+  "main": "index.js",
+  "scripts": {
+    "prepublish": "babel --presets react,es2015 carousel.js > index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kidwm/react-flex-carousel.git"
+  },
+  "keywords": [
+    "react",
+    "flexbox",
+    "carousel"
+  ],
+  "author": "Chen-Heng Chang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kidwm/react-flex-carousel/issues"
+  },
+  "homepage": "https://github.com/kidwm/react-flex-carousel#readme",
+  "dependencies": {
+    "react": "^0.14.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.3.17",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13"
+  }
+}

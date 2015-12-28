@@ -1,0 +1,66 @@
+.slider ul li img {
+	display: block;
+	max-width: 100%;
+	object-fit: cover;
+	margin: 0 auto;
+}
+
+.slider ol {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	bottom: .5em;
+	text-align: center;
+	width: 100%;
+}
+
+.slider ol li {
+	display: inline-block;
+	min-width: 10px;
+	min-height: 10px;
+	width: .6em;
+	height: .6em;
+	background-color: #BEC0BC;
+	margin: 0 .5em;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.slider ol button {
+	opacity: 0;
+	cursor: pointer;
+}
+
+.slider ol .active {
+	pointer-events: none;
+	background-color: black;
+}
+
+.slider menu {
+	position: absolute;
+	width: 100%;
+	top: 50%;
+	margin-top: -1em;
+}
+
+.slider menu button {
+	position: absolute;
+	font-size: inherit;
+	background-color: black;
+	height: 2em;
+	width: 2em;
+	opacity: .5;
+	padding: 0;
+	border: 0;
+	outline: none;
+	cursor: pointer;
+}
+
+.slider .prev {
+	left: 0;
+}
+
+.slider .next {
+	right: 0;
+}
