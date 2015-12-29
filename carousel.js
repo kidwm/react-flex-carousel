@@ -5,11 +5,16 @@ export default class Carousel extends Component {
 		super(props);
 		this.state = {slide: 1, dragging: null, sliding: false, offset: 0}; // slide index start from 1
 		this.setTimer = this.setTimer.bind(this);
+    	this.onTransitionEnd = this.onTransitionEnd.bind(this);
 	}
 	componentDidMount() {
 		this.setTimer();
-		this.refs.slider.addEventListener('transitionend', this.onTransitionEnd.bind(this), false);
+		this.refs.slider.addEventListener('transitionend', this.onTransitionEnd, false);
 	}
+    componentWillUnmount() {
+        window.clearInterval(this.timer);
+        this.refs.slider.removeEventListener('transitionend', this.onTransitionEnd);
+    }
 	onTransitionEnd() { // this will not be triggered when document.hidden
 		let {slide} = this.state;
 		const count = Children.count(this.props.children);
