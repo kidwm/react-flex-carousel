@@ -11,11 +11,11 @@ export default class Carousel extends Component {
 		this.refs.slider.addEventListener('transitionend', this.onTransitionEnd.bind(this), false);
 	}
 	onTransitionEnd() { // this will not be triggered when document.hidden
-	let {slide} = this.state;
+		let {slide} = this.state;
 		const count = Children.count(this.props.children);
-	if (slide == count + 1) slide = 1;
+		if (slide == count + 1) slide = 1;
 		if (slide == 0) slide = count;
-		this.setState({slide, sliding: false}, this.setTimer);
+			this.setState({slide, sliding: false}, this.setTimer);
 	}
 	setTimer() {
 		const interval = this.props.autoplayInteval;
@@ -30,11 +30,11 @@ export default class Carousel extends Component {
 			this.setState({slide, sliding: true, dragging: null}, this.setTimer);
 	}
 	onDraggingStart(event) {
-	if (event.touches)
-		this.setState({dragging: {
-			x: event.touches[0].pageX,
-			y: event.touches[0].pageY
-		}, offset: 0});
+		if (event.touches)
+			this.setState({dragging: {
+				x: event.touches[0].pageX,
+				y: event.touches[0].pageY
+			}, offset: 0});
 	}
 	onDraggingMove(event) {
 		const {sliding, dragging} = this.state;
@@ -60,6 +60,7 @@ export default class Carousel extends Component {
 	render() {
 		const {children, className, switcher, indicator} = this.props;
 		const {slide, sliding, dragging, offset} = this.state;
+		const slides = Children.map(children, (child) => React.cloneElement(child, {key: child.key + '_clone'}));
 		const enabled = Children.count(children) > 1;
 		const prevSlide = this.changeSlide.bind(this, slide - 1);
 		const nextSlide = this.changeSlide.bind(this, slide + 1);
@@ -81,8 +82,8 @@ export default class Carousel extends Component {
 					transform: dragging && offset !== 0 ? 'translateX(calc(' + (offset * 1) + 'px - ' + slide * 100 + '%))' : 'translateX(-' + slide * 100 + '%)',
 					transition: sliding ? 'transform .8s ease-in-out' : 'none'
 					}} {...events}>
-					{enabled && children.slice(-1).concat(children, children[0]).map(
-							(item, index) => <li key={index} className={slide == index ? 'active' : null} style={{
+					{enabled && Children.map(slides.slice(-1).concat(children, slides.slice(0, 1)),
+							(item, index) => <li className={slide == index ? 'active' : null} style={{
 							flexBasis: '100%',
 							flexShrink: 0
 						}}>{item}</li>) || <li>{children}</li>
