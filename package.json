@@ -1,6 +1,6 @@
 {
   "name": "react-flex-carousel",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A simple responsive Carousel powered by React and CSS Flexbox",
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,7 @@
     "url": "https://github.com/kidwm/react-flex-carousel/issues"
   },
   "homepage": "https://github.com/kidwm/react-flex-carousel#readme",
-  "dependencies": {
+  "peerDependencies": {
     "react": "^0.14.3"
   },
   "devDependencies": {

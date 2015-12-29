@@ -19,7 +19,7 @@ export default class Carousel extends Component {
 	}
 	setTimer() {
 		const interval = this.props.autoplayInteval;
-		if (typeof window !== 'undefined' && interval && interval > 0) {
+		if (interval && interval > 0) {
 			window.clearInterval(this.timer);
 			this.timer = window.setInterval(this.changeSlide.bind(this, this.state.slide + 1), interval);
 		}
@@ -101,4 +101,3 @@ export default class Carousel extends Component {
 		);
 	}
 }
-
