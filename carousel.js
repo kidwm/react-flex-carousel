@@ -6,49 +6,49 @@ export default class Carousel extends Component {
 		this.state = {slide: 1, dragging: null, sliding: false, offset: 0}; // slide index start from 1
 		this.setTimer = this.setTimer.bind(this);
 	}
-  componentDidMount() {
-    this.setTimer();
-    this.refs.slider.addEventListener('transitionend', this.onTransitionEnd.bind(this), false);
-  }
-  onTransitionEnd() { // this will not be triggered when document.hidden
-    let {slide} = this.state;
+	componentDidMount() {
+		this.setTimer();
+		this.refs.slider.addEventListener('transitionend', this.onTransitionEnd.bind(this), false);
+	}
+	onTransitionEnd() { // this will not be triggered when document.hidden
+	let {slide} = this.state;
 		const count = Children.count(this.props.children);
-    if (slide == count + 1) slide = 1;
+	if (slide == count + 1) slide = 1;
 		if (slide == 0) slide = count;
 		this.setState({slide, sliding: false}, this.setTimer);
-  }
+	}
 	setTimer() {
 		const interval = this.props.autoplayInteval;
-    if (typeof window !== 'undefined' && interval && interval > 0) {
-      window.clearInterval(this.timer);
-      this.timer = window.setInterval(this.changeSlide.bind(this, this.state.slide + 1), interval);
-    }
+		if (typeof window !== 'undefined' && interval && interval > 0) {
+			window.clearInterval(this.timer);
+			this.timer = window.setInterval(this.changeSlide.bind(this, this.state.slide + 1), interval);
+		}
 	}
 	changeSlide(slide) {
 		if (document.hidden) return; // run only when page is visible
-    if (slide && slide >= 0 && slide <= React.Children.count(this.props.children) + 1)
-      this.setState({slide, sliding: true, dragging: null}, this.setTimer);
+		if (slide && slide >= 0 && slide <= React.Children.count(this.props.children) + 1)
+			this.setState({slide, sliding: true, dragging: null}, this.setTimer);
 	}
 	onDraggingStart(event) {
-    if (event.touches)
-      this.setState({dragging: {
-        x: event.touches[0].pageX,
-        y: event.touches[0].pageY
-      }, offset: 0});
+	if (event.touches)
+		this.setState({dragging: {
+			x: event.touches[0].pageX,
+			y: event.touches[0].pageY
+		}, offset: 0});
 	}
 	onDraggingMove(event) {
 		const {sliding, dragging} = this.state;
 		if (sliding || !dragging || !event.touches) return;
-    const x = event.touches[0].pageX;
-    const y = event.touches[0].pageY;
-    const offset = x - dragging.x;
-    if (Math.abs(y - dragging.y) < Math.abs(offset)) event.preventDefault();
-		this.setState({offset});
+		const x = event.touches[0].pageX;
+		const y = event.touches[0].pageY;
+		const offset = x - dragging.x;
+		if (Math.abs(y - dragging.y) < Math.abs(offset)) event.preventDefault();
+			this.setState({offset});
 	}
 	onDraggingEnd(event) {
 		const {slide, offset, dragging} = this.state;
-    if (!dragging) return;
-    const target = Math.abs(offset) > this.refs.slider.clientWidth / 5 ? (offset > 0 ? slide - 1 : slide + 1) : slide;
+		if (!dragging) return;
+		const target = Math.abs(offset) > this.refs.slider.clientWidth / 5 ? (offset > 0 ? slide - 1 : slide + 1) : slide;
 		this.setState({dragging: null}, this.changeSlide.bind(this, target));
 	}
 	onClick(event) {
@@ -59,10 +59,10 @@ export default class Carousel extends Component {
 	}
 	render() {
 		const {children, className, switcher, indicator} = this.props;
-    const {slide, sliding, dragging, offset} = this.state;
+		const {slide, sliding, dragging, offset} = this.state;
 		const enabled = Children.count(children) > 1;
-    const prevSlide = this.changeSlide.bind(this, slide - 1);
-    const nextSlide = this.changeSlide.bind(this, slide + 1);
+		const prevSlide = this.changeSlide.bind(this, slide - 1);
+		const nextSlide = this.changeSlide.bind(this, slide + 1);
 		const events = {
 			onTouchStart: this.onDraggingStart.bind(this),
 			onTouchMove: this.onDraggingMove.bind(this),
@@ -72,25 +72,25 @@ export default class Carousel extends Component {
 		};
 		return (
 			<div className={['slider', className || ''].join(' ')} style={{
-        position: 'relative',
-        overflowX: 'hidden',
-        willChange: 'transform'
-      }}>
+				position: 'relative',
+				overflowX: 'hidden',
+				willChange: 'transform'
+			}}>
 				<ul ref="slider" style={{
-            display: 'flex',
-						transform: dragging && offset !== 0 ? 'translateX(calc(' + (offset * 1) + 'px - ' + slide * 100 + '%))' : 'translateX(-' + slide * 100 + '%)',
-            transition: sliding ? 'transform .8s ease-in-out' : 'none'
-          }} {...events}>
+					display: 'flex',
+					transform: dragging && offset !== 0 ? 'translateX(calc(' + (offset * 1) + 'px - ' + slide * 100 + '%))' : 'translateX(-' + slide * 100 + '%)',
+					transition: sliding ? 'transform .8s ease-in-out' : 'none'
+					}} {...events}>
 					{enabled && children.slice(-1).concat(children, children[0]).map(
-						(item, index) => <li key={index} className={slide == index ? 'active' : null} style={{
-              flexBasis: '100%',
-              flexShrink: 0
-            }}>{item}</li>) || <li>{children}</li>
+							(item, index) => <li key={index} className={slide == index ? 'active' : null} style={{
+							flexBasis: '100%',
+							flexShrink: 0
+						}}>{item}</li>) || <li>{children}</li>
 					}
 				</ul>
-        {enabled && switcher && <menu>
+				{enabled && switcher && <menu>
 					<button className="prev" onClick={prevSlide}></button>
-          <button className="next" onClick={nextSlide}></button>
+					<button className="next" onClick={nextSlide}></button>
 				</menu>}
 				{enabled && indicator && <ol>
 					{Children.map(children, (item, index) => <li className={slide == index + 1 ? 'active' : null}>
@@ -101,3 +101,4 @@ export default class Carousel extends Component {
 		);
 	}
 }
+
