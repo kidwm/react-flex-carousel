@@ -5,22 +5,22 @@ export default class Carousel extends Component {
 		super(props);
 		this.state = {slide: 1, dragging: null, sliding: false, offset: 0}; // slide index start from 1
 		this.setTimer = this.setTimer.bind(this);
-    	this.onTransitionEnd = this.onTransitionEnd.bind(this);
+		this.onTransitionEnd = this.onTransitionEnd.bind(this);
 	}
 	componentDidMount() {
 		this.setTimer();
 		this.refs.slider.addEventListener('transitionend', this.onTransitionEnd, false);
 	}
-    componentWillUnmount() {
-        window.clearInterval(this.timer);
-        this.refs.slider.removeEventListener('transitionend', this.onTransitionEnd);
-    }
+	componentWillUnmount() {
+		window.clearInterval(this.timer);
+		this.refs.slider.removeEventListener('transitionend', this.onTransitionEnd);
+	}
 	onTransitionEnd() { // this will not be triggered when document.hidden
 		let {slide} = this.state;
 		const count = Children.count(this.props.children);
 		if (slide == count + 1) slide = 1;
 		if (slide == 0) slide = count;
-			this.setState({slide, sliding: false}, this.setTimer);
+		this.setState({slide, sliding: false}, this.setTimer);
 	}
 	setTimer() {
 		const interval = this.props.autoplayInteval;
@@ -48,7 +48,7 @@ export default class Carousel extends Component {
 		const y = event.touches[0].pageY;
 		const offset = x - dragging.x;
 		if (Math.abs(y - dragging.y) < Math.abs(offset)) event.preventDefault();
-			this.setState({offset});
+		this.setState({offset});
 	}
 	onDraggingEnd(event) {
 		const {slide, offset, dragging} = this.state;
@@ -88,7 +88,7 @@ export default class Carousel extends Component {
 					transition: sliding ? 'transform .8s ease-in-out' : 'none'
 					}} {...events}>
 					{enabled && Children.map(slides.slice(-1).concat(children, slides.slice(0, 1)),
-							(item, index) => <li className={slide == index ? 'active' : null} style={{
+						(item, index) => <li className={slide == index ? 'active' : null} style={{
 							flexBasis: '100%',
 							flexShrink: 0
 						}}>{item}</li>) || <li>{children}</li>
