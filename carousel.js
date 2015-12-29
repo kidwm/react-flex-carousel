@@ -5,7 +5,7 @@ export default class Carousel extends Component {
 		super(props);
 		this.state = {slide: 1, dragging: null, sliding: false, offset: 0}; // slide index start from 1
 		this.setTimer = this.setTimer.bind(this);
-        this.onTransitionEnd = this.onTransitionEnd.bind(this);
+    	this.onTransitionEnd = this.onTransitionEnd.bind(this);
 	}
 	componentDidMount() {
 		this.setTimer();
