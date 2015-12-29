@@ -19,7 +19,7 @@ export default class Carousel extends Component {
 	}
 	setTimer() {
 		const interval = this.props.autoplayInteval;
-		if (interval && interval > 0) {
+		if (Children.count(this.props.children) > 1 && interval && interval > 0) {
 			window.clearInterval(this.timer);
 			this.timer = window.setInterval(this.changeSlide.bind(this, this.state.slide + 1), interval);
 		}
@@ -79,7 +79,7 @@ export default class Carousel extends Component {
 			}}>
 				<ul ref="slider" style={{
 					display: 'flex',
-					transform: dragging && offset !== 0 ? 'translateX(calc(' + (offset * 1) + 'px - ' + slide * 100 + '%))' : 'translateX(-' + slide * 100 + '%)',
+					transform: enabled ? (dragging && offset !== 0 ? 'translateX(calc(' + (offset * 1) + 'px - ' + slide * 100 + '%))' : 'translateX(-' + slide * 100 + '%)') : null,
 					transition: sliding ? 'transform .8s ease-in-out' : 'none'
 					}} {...events}>
 					{enabled && Children.map(slides.slice(-1).concat(children, slides.slice(0, 1)),
