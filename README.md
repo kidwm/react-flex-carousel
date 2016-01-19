@@ -1,6 +1,8 @@
 # react-flex-carousel
 A simple responsive Carousel powered by React and CSS Flexbox
 
+You can also try [nuka-carousel](https://github.com/kenwheeler/nuka-carousel) if needed more features.
+
 
 ## Feature
 
