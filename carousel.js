@@ -5,15 +5,22 @@ export default class Carousel extends Component {
 		super(props);
 		this.state = {slide: 1, dragging: null, sliding: false, offset: 0}; // slide index start from 1
 		this.setTimer = this.setTimer.bind(this);
-		this.onTransitionEnd = this.onTransitionEnd.bind(this);
+		this.prevSlide = this.changeSlide.bind(this, slide - 1);
+		this.nextSlide = this.changeSlide.bind(this, slide + 1);
+		this.events = {
+			onTouchStart: this.onDraggingStart.bind(this),
+			onTouchMove: this.onDraggingMove.bind(this),
+			onTouchEnd: this.onDraggingEnd.bind(this),
+			onTouchCancel: this.onDraggingEnd.bind(this),
+			onClick: this.onClick.bind(this),
+			onTransitionEnd: this.onTransitionEnd.bind(this)
+		};
 	}
 	componentDidMount() {
 		this.setTimer();
-		this.refs.slider.addEventListener('transitionend', this.onTransitionEnd, false);
 	}
 	componentWillUnmount() {
 		window.clearInterval(this.timer);
-		this.refs.slider.removeEventListener('transitionend', this.onTransitionEnd);
 	}
 	onTransitionEnd() { // this will not be triggered when document.hidden
 		let {slide} = this.state;
@@ -67,15 +74,6 @@ export default class Carousel extends Component {
 		const {slide, sliding, dragging, offset} = this.state;
 		const slides = Children.map(children, (child) => React.cloneElement(child, {key: child.key + '_clone'}));
 		const enabled = Children.count(children) > 1;
-		const prevSlide = this.changeSlide.bind(this, slide - 1);
-		const nextSlide = this.changeSlide.bind(this, slide + 1);
-		const events = {
-			onTouchStart: this.onDraggingStart.bind(this),
-			onTouchMove: this.onDraggingMove.bind(this),
-			onTouchEnd: this.onDraggingEnd.bind(this),
-			onTouchCancel: this.onDraggingEnd.bind(this),
-			onClick: this.onClick.bind(this)
-		};
 		return (
 			<div className={['slider', className || ''].join(' ')} style={{
 				position: 'relative',
@@ -86,7 +84,7 @@ export default class Carousel extends Component {
 					display: 'flex',
 					transform: enabled ? (dragging && offset !== 0 ? 'translateX(calc(' + (offset * 1) + 'px - ' + slide * 100 + '%))' : 'translateX(-' + slide * 100 + '%)') : null,
 					transition: sliding ? 'transform .8s ease-in-out' : 'none'
-					}} {...events}>
+				}} {...this.events}>
 					{enabled && Children.map(slides.slice(-1).concat(children, slides.slice(0, 1)),
 						(item, index) => <li className={slide == index ? 'active' : null} style={{
 							flexBasis: '100%',
@@ -95,8 +93,8 @@ export default class Carousel extends Component {
 					}
 				</ul>
 				{enabled && switcher && <menu>
-					<button className="prev" onClick={prevSlide}></button>
-					<button className="next" onClick={nextSlide}></button>
+					<button className="prev" onClick={this.prevSlide}></button>
+					<button className="next" onClick={this.nextSlide}></button>
 				</menu>}
 				{enabled && indicator && <ol>
 					{Children.map(children, (item, index) => <li className={slide == index + 1 ? 'active' : null}>
