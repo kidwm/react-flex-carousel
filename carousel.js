@@ -5,8 +5,6 @@ export default class Carousel extends Component {
 		super(props);
 		this.state = {slide: 1, dragging: null, sliding: false, offset: 0}; // slide index start from 1
 		this.setTimer = this.setTimer.bind(this);
-		this.prevSlide = this.changeSlide.bind(this, slide - 1);
-		this.nextSlide = this.changeSlide.bind(this, slide + 1);
 		this.events = {
 			onTouchStart: this.onDraggingStart.bind(this),
 			onTouchMove: this.onDraggingMove.bind(this),
@@ -74,6 +72,8 @@ export default class Carousel extends Component {
 		const {slide, sliding, dragging, offset} = this.state;
 		const slides = Children.map(children, (child) => React.cloneElement(child, {key: child.key + '_clone'}));
 		const enabled = Children.count(children) > 1;
+		const prevSlide = this.changeSlide.bind(this, slide - 1);
+		const nextSlide = this.changeSlide.bind(this, slide + 1);
 		return (
 			<div className={['slider', className || ''].join(' ')} style={{
 				position: 'relative',
@@ -93,8 +93,8 @@ export default class Carousel extends Component {
 					}
 				</ul>
 				{enabled && switcher && <menu>
-					<button className="prev" onClick={this.prevSlide}></button>
-					<button className="next" onClick={this.nextSlide}></button>
+					<button className="prev" onClick={prevSlide}></button>
+					<button className="next" onClick={nextSlide}></button>
 				</menu>}
 				{enabled && indicator && <ol>
 					{Children.map(children, (item, index) => <li className={slide == index + 1 ? 'active' : null}>
