@@ -4,7 +4,7 @@
   "description": "A simple responsive Carousel powered by React and CSS Flexbox",
   "main": "index.js",
   "scripts": {
-    "prepublish": "babel --presets react --plugins transform-es2015-modules-commonjs carousel.js > index.js",
+    "prepublish": "babel --presets react carousel.js > index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -26,11 +26,11 @@
     "index.js"
   ],
   "peerDependencies": {
-    "react": "^15.1.0"
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
   },
   "devDependencies": {
-    "babel-cli": "^6.3.17",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.8.0",
-    "babel-preset-react": "^6.3.13"
+    "babel-cli": "^6.24.1",
+    "babel-preset-react": "^6.24.1"
   }
 }

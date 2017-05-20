@@ -1,3 +1,9 @@
+.slider ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
 .slider ul li > img {
 	display: block;
 	max-width: 100%;
@@ -29,6 +35,7 @@
 
 .slider ol button {
 	opacity: 0;
+	padding: 0;
 	cursor: pointer;
 }
 
@@ -42,6 +49,7 @@
 	width: 100%;
 	top: 50%;
 	margin-top: -1em;
+	padding: 0;
 }
 
 .slider menu button {

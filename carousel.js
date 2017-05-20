@@ -5,6 +5,7 @@ export default class Carousel extends Component {
 		super(props);
 		this.state = {slide: 1, dragging: null, sliding: false, offset: 0}; // slide index start from 1
 		this.setTimer = this.setTimer.bind(this);
+		this.clearTimer = this.clearTimer.bind(this);
 		this.events = {
 			onTouchStart: this.onDraggingStart.bind(this),
 			onTouchMove: this.onDraggingMove.bind(this),
@@ -18,7 +19,7 @@ export default class Carousel extends Component {
 		this.setTimer();
 	}
 	componentWillUnmount() {
-		window.clearInterval(this.timer);
+		this.clearTimer();
 	}
 	onTransitionEnd() { // this will not be triggered when document.hidden
 		let {slide} = this.state;
@@ -30,9 +31,12 @@ export default class Carousel extends Component {
 	setTimer() {
 		const interval = this.props.autoplayInteval;
 		if (Children.count(this.props.children) > 1 && interval && interval > 0) {
-			window.clearInterval(this.timer);
+			this.clearTimer();
 			this.timer = window.setInterval(this.changeSlide.bind(this, this.state.slide + 1), interval);
 		}
+	}
+	clearTimer() {
+		window.clearInterval(this.timer);
 	}
 	changeSlide(slide) {
 		if (document.hidden) return; // run only when page is visible
@@ -58,7 +62,7 @@ export default class Carousel extends Component {
 	onDraggingEnd(event) {
 		const {slide, offset, dragging} = this.state;
 		if (!dragging) return;
-		const target = Math.abs(offset) > this.refs.slider.clientWidth / 5 ? (offset > 0 ? slide - 1 : slide + 1) : slide;
+		const target = Math.abs(offset) > this.slider.clientWidth / 5 ? (offset > 0 ? slide - 1 : slide + 1) : slide;
 		this.setState({dragging: null}, this.changeSlide.bind(this, target));
 	}
 	onClick(event) {
@@ -71,16 +75,18 @@ export default class Carousel extends Component {
 		const {children, className, switcher, indicator} = this.props;
 		const {slide, sliding, dragging, offset} = this.state;
 		const slides = Children.map(children, (child) => React.cloneElement(child, {key: child.key + '_clone'}));
-		const enabled = Children.count(children) > 1;
-		const prevSlide = this.changeSlide.bind(this, slide - 1);
-		const nextSlide = this.changeSlide.bind(this, slide + 1);
+		const count = Children.count(children);
+		const enabled = count > 1;
+		const prevSlide = this.changeSlide.bind(this, slide > 1 ? slide - 1 : count);
+		const nextSlide = this.changeSlide.bind(this, slide + 1 > count ? 1 : slide + 1);
 		return (
 			<div className={['slider', className || ''].join(' ')} style={{
 				position: 'relative',
 				overflowX: 'hidden',
+				touchAction: 'pan-y pinch-zoom',
 				willChange: 'transform'
 			}}>
-				<ul ref="slider" style={{
+				<ul ref={node => {this.slider = node;}} style={{
 					display: 'flex',
 					transform: enabled ? (dragging && offset !== 0 ? 'translateX(calc(' + (offset * 1) + 'px - ' + slide * 100 + '%))' : 'translateX(-' + slide * 100 + '%)') : null,
 					transition: sliding ? 'transform .8s ease-in-out' : 'none'

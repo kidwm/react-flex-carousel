@@ -20,6 +20,10 @@ You can also try [nuka-carousel](https://github.com/kenwheeler/nuka-carousel) if
 
 Then apply your style, take `slider.css` for reference.
 
+## Demo
+
+Install [nwb](https://github.com/insin/nwb), then `react run example.js` to see the demo.
+
 ## License
 
 MIT
