@@ -1,6 +1,7 @@
 import React, {Component, Children} from 'react';
+import PropTypes from 'prop-types';
 
-export default class Carousel extends Component {
+class Carousel extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {slide: 1, dragging: null, sliding: false, offset: 0}; // slide index start from 1
@@ -72,13 +73,17 @@ export default class Carousel extends Component {
 		event.nativeEvent.stopPropagation();
 	}
 	render() {
-		const {children, className, switcher, indicator} = this.props;
+		const {children, className, switcher, indicator, transitionDuration, transitionTimingFunction} = this.props;
 		const {slide, sliding, dragging, offset} = this.state;
 		const slides = Children.map(children, (child) => React.cloneElement(child, {key: child.key + '_clone'}));
 		const count = Children.count(children);
 		const enabled = count > 1;
 		const prevSlide = this.changeSlide.bind(this, slide > 1 ? slide - 1 : count);
 		const nextSlide = this.changeSlide.bind(this, slide + 1 > count ? 1 : slide + 1);
+		const slideStyle = {
+			flexBasis: '100%',
+			flexShrink: 0
+		};
 		return (
 			<div className={['slider', className || ''].join(' ')} style={{
 				position: 'relative',
@@ -88,14 +93,14 @@ export default class Carousel extends Component {
 			}}>
 				<ul ref={node => {this.slider = node;}} style={{
 					display: 'flex',
+					transitionProperty: sliding ? 'transform' : 'none',
 					transform: enabled ? (dragging && offset !== 0 ? 'translateX(calc(' + (offset * 1) + 'px - ' + slide * 100 + '%))' : 'translateX(-' + slide * 100 + '%)') : null,
-					transition: sliding ? 'transform .8s ease-in-out' : 'none'
+					transitionDuration,
+					transitionTimingFunction
+
 				}} {...this.events}>
 					{enabled && Children.map(slides.slice(-1).concat(children, slides.slice(0, 1)),
-						(item, index) => <li className={slide == index ? 'active' : null} style={{
-							flexBasis: '100%',
-							flexShrink: 0
-						}}>{item}</li>) || <li>{children}</li>
+						(item, index) => <li className={slide == index ? 'active' : null} style={slideStyle}>{item}</li>) || <li>{children}</li>
 					}
 				</ul>
 				{enabled && switcher && <menu>
@@ -111,3 +116,22 @@ export default class Carousel extends Component {
 		);
 	}
 }
+
+Carousel.propTypes = {
+	className: PropTypes.string,
+	transitionDuration: PropTypes.string,
+	transitionTimingFunction: PropTypes.string,
+	switcher: PropTypes.bool,
+	indicator: PropTypes.bool,
+	children: PropTypes.oneOfType([
+		PropTypes.arrayOf(PropTypes.node),
+		PropTypes.node
+	]).isRequired
+};
+
+Carousel.defaultProps = {
+	transitionDuration: '.8s',
+	transitionTimingFunction: 'ease-in-out',
+};
+
+export default Carousel;
