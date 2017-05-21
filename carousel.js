@@ -119,6 +119,7 @@ class Carousel extends Component {
 
 Carousel.propTypes = {
 	className: PropTypes.string,
+	autoplayInteval: PropTypes.number,
 	transitionDuration: PropTypes.string,
 	transitionTimingFunction: PropTypes.string,
 	switcher: PropTypes.bool,

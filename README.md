@@ -18,6 +18,21 @@ You can also try [nuka-carousel](https://github.com/kenwheeler/nuka-carousel) if
 </Carousel>
 ```
 
+### Props
+
+* `className`:
+	class name on Carousel for CSS styling
+* `autoplayInteval`:
+	set inteval number in ms to enable carousel autoplay
+* `transitionDuration`:
+	CSS transition-duration, default is `.8s`
+* `transitionTimingFunction`:
+	CSS transition-timing-function, default is `ease-in-out`
+* `switcher`:
+	toggle to show the prev/next buttons, default is `false`
+* `indicator`:
+	toggle to show the indicator dots, default is `false`
+
 Then apply your style, take `slider.css` for reference.
 
 ## Demo
