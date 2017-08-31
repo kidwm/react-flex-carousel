@@ -78,7 +78,16 @@ class Carousel extends Component {
 		event.nativeEvent.stopPropagation();
 	}
 	render() {
-		const {children, autoPlayInterval, switcher, indicator, transitionDuration, transitionTimingFunction, slideWillChange, slideDidChange, ...props} = this.props;
+		const {children, switcher, indicator, transitionDuration, transitionTimingFunction, slideWillChange, slideDidChange} = this.props;
+		const props = Object.assign({}, this.props); // rest parameters is not available before node 8
+		delete props.children;
+		delete props.autoPlayInterval;
+		delete props.switcher;
+		delete props.indicator;
+		delete props.transitionDuration;
+		delete props.transitionTimingFunction;
+		delete props.slideWillChange;
+		delete props.slideDidChange;
 		const {slide, sliding, dragging, offset} = this.state;
 		const slides = Children.map(children, (child) => React.cloneElement(child, {key: child.key + '_clone'}));
 		const count = Children.count(children);
