@@ -27,11 +27,14 @@ class Carousel extends Component {
 		const count = Children.count(this.props.children);
 		if (slide == count + 1) slide = 1;
 		if (slide == 0) slide = count;
-		this.setState({slide, sliding: false}, this.setTimer);
+		this.setState({slide, sliding: false}, () => {
+			this.setTimer();
+			this.props.slideDidChange && this.props.slideDidChange(slide);
+		});
 	}
 	setTimer() {
-		const interval = this.props.autoplayInteval;
-		if (Children.count(this.props.children) > 1 && interval && interval > 0) {
+		const interval = this.props.autoPlayInterval;
+		if (Children.count(this.props.children) > 1 && interval > 0) {
 			this.clearTimer();
 			this.timer = window.setInterval(this.changeSlide.bind(this, this.state.slide + 1), interval);
 		}
@@ -41,9 +44,11 @@ class Carousel extends Component {
 	}
 	changeSlide(slide) {
 		if (document.hidden) return; // run only when page is visible
-		if (slide && slide >= 0 && slide <= React.Children.count(this.props.children) + 1)
+		if (this.props.slideWillChange && !this.props.slideWillChange(slide, this.state.slide)) return;
+		if (slide >= 0 && slide <= React.Children.count(this.props.children) + 1)
 			this.setState({slide, sliding: true, dragging: null}, this.setTimer);
 	}
+
 	onDraggingStart(event) {
 		if (event.touches)
 			this.setState({dragging: {
@@ -73,45 +78,49 @@ class Carousel extends Component {
 		event.nativeEvent.stopPropagation();
 	}
 	render() {
-		const {children, className, switcher, indicator, transitionDuration, transitionTimingFunction} = this.props;
+		const {children, autoPlayInterval, switcher, indicator, transitionDuration, transitionTimingFunction, slideWillChange, slideDidChange, ...props} = this.props;
 		const {slide, sliding, dragging, offset} = this.state;
 		const slides = Children.map(children, (child) => React.cloneElement(child, {key: child.key + '_clone'}));
 		const count = Children.count(children);
 		const enabled = count > 1;
-		const prevSlide = this.changeSlide.bind(this, slide > 1 ? slide - 1 : count);
-		const nextSlide = this.changeSlide.bind(this, slide + 1 > count ? 1 : slide + 1);
+		const goPrevSlide = this.changeSlide.bind(this, slide - 1);
+		const goNextSlide = this.changeSlide.bind(this, slide + 1);
 		const slideStyle = {
 			flexBasis: '100%',
 			flexShrink: 0
 		};
 		return (
-			<div className={['slider', className || ''].join(' ')} style={{
+			<div {...props} style={Object.assign({}, props.style, {
 				position: 'relative',
 				overflowX: 'hidden',
 				touchAction: 'pan-y pinch-zoom',
 				willChange: 'transform'
-			}}>
+			})}>
 				<ul ref={node => {this.slider = node;}} style={{
+					listStyleType: 'none',
+					padding: 0,
+					margin: 0,
 					display: 'flex',
 					transitionProperty: sliding ? 'transform' : 'none',
 					transform: enabled ? (dragging && offset !== 0 ? 'translateX(calc(' + (offset * 1) + 'px - ' + slide * 100 + '%))' : 'translateX(-' + slide * 100 + '%)') : null,
 					transitionDuration,
 					transitionTimingFunction
-
 				}} {...this.events}>
 					{enabled && Children.map(slides.slice(-1).concat(children, slides.slice(0, 1)),
-						(item, index) => <li className={slide == index ? 'active' : null} style={slideStyle}>{item}</li>) || <li>{children}</li>
+						(item, index) => <li aria-current={slide === index} style={slideStyle}>{item}</li>) || <li>{children}</li>
 					}
 				</ul>
-				{enabled && switcher && <menu>
-					<button className="prev" onClick={prevSlide}></button>
-					<button className="next" onClick={nextSlide}></button>
-				</menu>}
 				{enabled && indicator && <ol>
-					{Children.map(children, (item, index) => <li className={slide == index + 1 ? 'active' : null}>
-						<button onClick={this.changeSlide.bind(this, index + 1)}>{index}</button>
-					</li>)}
+					{Children.map(children, (item, index) =>
+						<li aria-current={slide === index + 1} onClick={this.changeSlide.bind(this, index + 1)}>
+							{index}
+						</li>
+					)}
 				</ol>}
+				{enabled && switcher && <div>
+					<button className="prev" onClick={goPrevSlide}></button>
+					<button className="next" onClick={goNextSlide}></button>
+				</div>}
 			</div>
 		);
 	}
@@ -119,11 +128,13 @@ class Carousel extends Component {
 
 Carousel.propTypes = {
 	className: PropTypes.string,
-	autoplayInteval: PropTypes.number,
+	autoPlayInterval: PropTypes.number,
 	transitionDuration: PropTypes.string,
 	transitionTimingFunction: PropTypes.string,
 	switcher: PropTypes.bool,
 	indicator: PropTypes.bool,
+	slideWillChange: PropTypes.func,
+	slideDidChange: PropTypes.func,
 	children: PropTypes.oneOfType([
 		PropTypes.arrayOf(PropTypes.node),
 		PropTypes.node
@@ -131,6 +142,7 @@ Carousel.propTypes = {
 };
 
 Carousel.defaultProps = {
+	className: 'slider',
 	transitionDuration: '.8s',
 	transitionTimingFunction: 'ease-in-out',
 };

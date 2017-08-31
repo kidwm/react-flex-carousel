@@ -1,9 +1,3 @@
-.slider ul {
-	list-style-type: none;
-	padding: 0;
-	margin: 0;
-}
-
 .slider ul li > img {
 	display: block;
 	max-width: 100%;
@@ -31,20 +25,17 @@
 	margin: 0 .5em;
 	border-radius: 50%;
 	overflow: hidden;
-}
-
-.slider ol button {
-	opacity: 0;
-	padding: 0;
 	cursor: pointer;
+	text-indent: 100%;
 }
 
-.slider ol .active {
+.slider ol [aria-current="true"] {
 	pointer-events: none;
+	cursor: auto;
 	background-color: black;
 }
 
-.slider menu {
+.slider ol + div {
 	position: absolute;
 	width: 100%;
 	top: 50%;
@@ -52,7 +43,7 @@
 	padding: 0;
 }
 
-.slider menu button {
+.slider ol + div button {
 	position: absolute;
 	font-size: inherit;
 	background-color: black;

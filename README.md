@@ -11,7 +11,7 @@ You can also try [nuka-carousel](https://github.com/kenwheeler/nuka-carousel) if
 
 ## Usage
 ```js
-<Carousel className="slider" autoplayInteval={4500} indicator={true} switcher={true}>
+<Carousel autoPlayInterval={4500} indicator={true} switcher={true}>
 	<div></div>
 	<div></div>
 	<div></div>
@@ -21,23 +21,42 @@ You can also try [nuka-carousel](https://github.com/kenwheeler/nuka-carousel) if
 ### Props
 
 * `className`:
-	class name on Carousel for CSS styling
-* `autoplayInteval`:
+
+	class name on Carousel for CSS styling, default is `slider`
+
+* `autoPlayInterval`:
+
 	set inteval number in ms to enable carousel autoplay
+
 * `transitionDuration`:
+
 	CSS transition-duration, default is `.8s`
+
 * `transitionTimingFunction`:
+
 	CSS transition-timing-function, default is `ease-in-out`
+
 * `switcher`:
+
 	toggle to show the prev/next buttons, default is `false`
+
 * `indicator`:
+
 	toggle to show the indicator dots, default is `false`
+
+* `slideWillChange(newSlideIndex, currentSlideIndex)`:
+
+	hook function before slide transition, return `false` could cancel transition.
+
+* `slideDidChange(newSlideIndex)`:
+
+	hook function after slide transition.
 
 Then apply your style, take `slider.css` for reference.
 
 ## Demo
 
-Install [nwb](https://github.com/insin/nwb), then `react run example.js` to see the demo.
+Install [nwb](https://github.com/insin/nwb), then `nwb react run example.js` to see the demo.
 
 ## License
 
