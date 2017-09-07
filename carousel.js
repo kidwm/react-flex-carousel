@@ -118,8 +118,8 @@ class Carousel extends Component {
 					)}
 				</ol>}
 				{enabled && switcher && <div>
-					<button className="prev" onClick={goPrevSlide}></button>
-					<button className="next" onClick={goNextSlide}></button>
+					<button type="button" className="prev" onClick={goPrevSlide}></button>
+					<button type="button" className="next" onClick={goNextSlide}></button>
 				</div>}
 			</div>
 		);
