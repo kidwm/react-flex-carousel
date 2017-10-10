@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kidwm/react-flex-carousel.git"
+    "url": "git+https://github.com/mikejw/react-flex-carousel.git"
   },
   "keywords": [
     "react",
@@ -19,9 +19,9 @@
   "author": "Chen-Heng Chang",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kidwm/react-flex-carousel/issues"
+    "url": "https://github.com/mikejw/react-flex-carousel/issues"
   },
-  "homepage": "https://github.com/kidwm/react-flex-carousel#readme",
+  "homepage": "https://github.com/mikejw/react-flex-carousel#readme",
   "files": [
     "index.js"
   ],

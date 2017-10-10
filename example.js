@@ -4,7 +4,7 @@ import './slider.css';
 
 export default class App extends Component {
   render() {
-    return <Carousel autoPlayInterval={2000} indicator={true} switcher={true}>
+    return <Carousel autoPlayInterval={2000} indicator={true} switcher={true} startingSlide={2}>
 		<div style={{height: '300px', textAlign: 'center', backgroundColor: 'red'}}>1</div>
 		<div style={{height: '300px', textAlign: 'center', backgroundColor: 'blue'}}>2</div>
 		<div style={{height: '300px', textAlign: 'center', backgroundColor: 'green'}}>3</div>

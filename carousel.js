@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 class Carousel extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {slide: 1, dragging: null, sliding: false, offset: 0}; // slide index start from 1
+		this.state = {slide: props.startingSlide || 1, dragging: null, sliding: false, offset: 0}; // slide index start from 1
 		this.setTimer = this.setTimer.bind(this);
 		this.clearTimer = this.clearTimer.bind(this);
 		this.events = {
