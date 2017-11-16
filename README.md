@@ -52,6 +52,10 @@ You can also try [nuka-carousel](https://github.com/kenwheeler/nuka-carousel) if
 
 	hook function after slide transition.
 
+* `initialSlide`:
+
+	index of displayed starting slide, default is `1`.
+
 Then apply your style, take `slider.css` for reference.
 
 ## Demo

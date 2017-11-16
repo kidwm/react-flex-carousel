@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 class Carousel extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {slide: 1, dragging: null, sliding: false, offset: 0}; // slide index start from 1
+		this.state = {slide: props.initialSlide, dragging: null, sliding: false, offset: 0};
 		this.setTimer = this.setTimer.bind(this);
 		this.clearTimer = this.clearTimer.bind(this);
 		this.events = {
@@ -88,6 +88,7 @@ class Carousel extends Component {
 		delete props.transitionTimingFunction;
 		delete props.slideWillChange;
 		delete props.slideDidChange;
+		delete props.initialSlide;
 		const {slide, sliding, dragging, offset} = this.state;
 		const slides = Children.map(children, (child) => React.cloneElement(child, {key: child.key + '_clone'}));
 		const count = Children.count(children);
@@ -144,6 +145,7 @@ Carousel.propTypes = {
 	indicator: PropTypes.bool,
 	slideWillChange: PropTypes.func,
 	slideDidChange: PropTypes.func,
+	initialSlide: PropTypes.number,
 	children: PropTypes.oneOfType([
 		PropTypes.arrayOf(PropTypes.node),
 		PropTypes.node
@@ -154,6 +156,7 @@ Carousel.defaultProps = {
 	className: 'slider',
 	transitionDuration: '.8s',
 	transitionTimingFunction: 'ease-in-out',
+	initialSlide: 1 // slide index start from 1
 };
 
 export default Carousel;
