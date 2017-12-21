@@ -1,39 +1,21 @@
 {
-  "name": "react-flex-carousel",
-  "version": "1.1.0",
-  "description": "A simple responsive Carousel powered by React and CSS Flexbox",
+  "name": "@twreporter/react-flex-carousel",
+  "version": "1.1.1",
   "main": "index.js",
   "scripts": {
-    "prepublish": "babel --presets react carousel.js > index.js",
+    "build": "babel --presets env,react carousel.js > index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kidwm/react-flex-carousel.git"
-  },
-  "keywords": [
-    "react",
-    "flexbox",
-    "carousel"
-  ],
-  "author": "Chen-Heng Chang",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/kidwm/react-flex-carousel/issues"
-  },
-  "homepage": "https://github.com/kidwm/react-flex-carousel#readme",
-  "files": [
-    "index.js"
-  ],
+  "repository": "https://github.com/twreporter/react-flex-carousel.git",
+  "license": "AGPL-3.0",
   "peerDependencies": {
+    "prop-types": "^15.5.10",
     "react": "^15.5.4 || ^16.0.0",
     "react-dom": "^15.5.4 || ^16.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1"
-  },
-  "dependencies": {
-    "prop-types": "^15.5.10"
   }
 }

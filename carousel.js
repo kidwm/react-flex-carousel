@@ -1,4 +1,4 @@
-import React, {Component, Children} from 'react';
+import React, { Component, Children } from 'react';
 import PropTypes from 'prop-types';
 
 class Carousel extends Component {
@@ -79,7 +79,7 @@ class Carousel extends Component {
 		event.nativeEvent.stopPropagation();
 	}
 	render() {
-		const {children, switcher, indicator, transitionDuration, transitionTimingFunction, slideWillChange, slideDidChange} = this.props;
+		const { children, switcher, indicator, transitionDuration, transitionTimingFunction, slideWillChange, slideDidChange } = this.props;
 		const props = Object.assign({}, this.props); // rest parameters is not available before node 8
 		delete props.children;
 		delete props.autoPlayInterval;
@@ -90,7 +90,7 @@ class Carousel extends Component {
 		delete props.slideWillChange;
 		delete props.slideDidChange;
 		delete props.initialSlide;
-		const {slide, sliding, dragging, offset} = this.state;
+		const { slide, sliding, dragging, offset } = this.state;
 		const slides = Children.map(children, (child) => React.cloneElement(child, {key: child.key + '_clone'}));
 		const count = Children.count(children);
 		const enabled = count > 1;
